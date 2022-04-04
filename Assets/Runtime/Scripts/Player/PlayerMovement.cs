@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Shoot")]
     [SerializeField] private float shootWaitTime = 0.5f;
+    private float waitBeforeShooting;
+
+    private float waitBeforeMoving;
+    [SerializeField] private float moveWaitTime = 0.3f;
+    private bool canMove = true;
 
     private Vector3 tempPos;
     private float xAxis;
@@ -30,12 +35,20 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleMovement();
         HandleAnimation();
+
         HandleFacingDirection();
+
+        HandleAndShooting();
+        CheckIfCanMove();
     }
     private void HandleMovement()
     {
         xAxis = Input.GetAxisRaw(TagManager.Horizontal);
         yAxis = Input.GetAxisRaw(TagManager.Vertical);
+        if(!canMove)
+        {
+            return;
+        }
 
         tempPos = transform.position;
 
@@ -51,6 +64,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleAnimation()
     {
+        if(!canMove)
+        {
+            return;
+        }
         if(Mathf.Abs(xAxis) > 0 || Mathf.Abs(yAxis) > 0)
         {
             playerAnimation.PlayAnimation(TagManager.WalkAnimationName);
@@ -69,6 +86,34 @@ public class PlayerMovement : MonoBehaviour
         else if(xAxis < 0)
         {
             playerAnimation.SetFacingirection(false);
+        }
+    }
+    private void StopMovement()
+    {
+        canMove = false;
+        waitBeforeMoving = Time.time + moveWaitTime;
+    }
+    private void Shoot()
+    {
+        waitBeforeShooting = Time.time + shootWaitTime;
+        StopMovement();
+        playerAnimation.PlayAnimation(TagManager.ShootAnimationName);
+    }
+    private void CheckIfCanMove()
+    {
+        if(Time.time > waitBeforeMoving)
+        {
+            canMove = true; 
+        }
+    }
+    private void HandleAndShooting()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            if(Time.time > waitBeforeShooting)
+            {
+                Shoot();
+            }
         }
     }
 }
