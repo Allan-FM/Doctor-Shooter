@@ -1,36 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 3.5f;
-
     [Header("Bounds")]
     [Space]
     [SerializeField] private float minBoundsX = -71f;
     [SerializeField] private float maxBoundsX = 71f;
     [SerializeField] private float minBoundsY = 3.7f;
     [SerializeField] private float maxBoundsY = 0f;
-
     [Header("Shoot")]
+    [Space]
     [SerializeField] private float shootWaitTime = 0.5f;
-    private float waitBeforeShooting;
-
-    private float waitBeforeMoving;
     [SerializeField] private float moveWaitTime = 0.3f;
+    private float waitBeforeShooting;
+    private float waitBeforeMoving;
     private bool canMove = true;
-
     private Vector3 tempPos;
     private float xAxis;
     private float yAxis;
     private PlayerAnimation playerAnimation;
-
+    private PlayerShootingManager playerShootingManager;
     private void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
+        playerShootingManager = GetComponent<PlayerShootingManager>();
     }
-
     private void Update()
     {
         HandleMovement();
@@ -98,8 +92,10 @@ public class PlayerMovement : MonoBehaviour
         waitBeforeShooting = Time.time + shootWaitTime;
         StopMovement();
         playerAnimation.PlayAnimation(TagManager.ShootAnimationName);
+
+        playerShootingManager.Shoot(transform.localScale.x);
     }
-    private void CheckIfCanMove()
+    private void CheckIfCanMove() 
     {
         if(Time.time > waitBeforeMoving)
         {
@@ -108,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleAndShooting()
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             if(Time.time > waitBeforeShooting)
             {

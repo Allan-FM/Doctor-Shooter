@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerAnimation : MonoBehaviour
 {
    private Animator anim;
@@ -31,7 +28,6 @@ public class PlayerAnimation : MonoBehaviour
        {
            tempScale.x = -1f;
        }
-
        transform.localScale = tempScale;
    }
 }
