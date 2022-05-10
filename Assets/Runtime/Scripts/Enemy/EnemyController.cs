@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour
     private Vector3 tempScale;
     private PlayerAnimation enemyAnimation;
 
+    [SerializeField] private EnemyDamageArea enemyDamageArea;
+
     private void Awake()
     {
         playerTarget = GameObject.FindWithTag(TagManager.PlayerTag).transform;
@@ -78,5 +80,10 @@ public class EnemyController : MonoBehaviour
 
             enemyAnimation.PlayAnimation(TagManager.AttackAnimationName);
         }
+    }
+    private void EnemyAttacked()
+    {
+        enemyDamageArea.gameObject.SetActive(true);
+        enemyDamageArea.ResetDeatictivateTimer();
     }
 }

@@ -604,6 +604,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  damageAmount: 5
 --- !u!1 &699139407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1791,6 +1792,7 @@ MonoBehaviour:
   stoppingDistance: 1.5
   attactWaitTime: 2.5
   attackFinesheWaitTime: 0.5
+  enemyDamageArea: {fileID: 669575210}
 --- !u!50 &1509911497
 Rigidbody2D:
   serializedVersion: 4
